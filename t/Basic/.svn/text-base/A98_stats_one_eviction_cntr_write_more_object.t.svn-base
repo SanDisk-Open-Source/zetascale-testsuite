@@ -1,0 +1,200 @@
+# file:
+# author: Le Li
+# email: leli@hengtiansoft.com
+# date: March 19, 2013
+# description: 
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use FindBin qw($Bin);
+use lib "$Bin/../../wrapper/lib";
+use Fdftest::Fdfapi;
+use Fdftest::Node;
+use Fdftest::BasicTest;
+use Test::More tests => 28;
+use Data::Dumper;
+
+my $node; 
+
+sub test_run {
+    print "<<<<<< Test with async_write=no >>>.\n";
+    my $ret;
+    my $cguid;
+    my $i=4;
+    my $key;
+
+    $ret = $node->start(
+               ZS_REFORMAT  => 1,
+           );
+    like($ret, qr/OK.*/, 'Node start');
+
+    #for(my $i=0; $i<=3; $i++){
+
+        #subtest "Test with ctnr c$i" => sub {
+
+                $ret=OpenContainer($node->conn(0), "c$i","ZS_CTNR_CREATE",1048576,$i,"ZS_DURABILITY_SW_CRASH_SAFE","no");
+                $cguid = $1 if($ret =~ /OK cguid=(\d+)/);
+                WriteObjects($node->conn(0),$cguid,1000,50,1000,50,2300);
+                sleep(120);
+
+                my @cntr_array = $node->dump_zsstats_log();
+                my %stats_hash = $node->get_details_hash();
+                #print Dumper(\%stats_hash);
+                print "Per Container Statistics:\n";
+
+                print "check statistics of Container Properties\n";
+                my $persistence="disabled";
+                my $eviction="disabled";
+                my $writethrough="disabled";
+                my $fifo="disabled";
+                $ret = ZSGetContainerProps(
+                $node->conn(0),
+                cguid   =>   "$cguid",
+                );
+                $ret =~ /persistent=(\d+)/;
+                $persistence="enabled" if ($1==1);
+                $ret =~ /evicting=(\d+)/;
+                $eviction="enabled" if ($1==1);
+                $ret =~ /writethru=(\d+)/;
+                $writethrough="enabled" if ($1==1);
+                $ret =~ /fifo_mode=(\d+)/;
+                $fifo="enabled" if ($1==1);
+                my %cntr_container_properties_hash = (
+                                                 cguid => $cguid,
+                                                 Size => "1048576 kbytes",
+                                                 persistence => $persistence,
+                                                 eviction => $eviction,
+                                                 writethrough => $writethrough,
+                                                 fifo => $fifo,
+                                                 async_writes => "disabled",
+                                                 durability => "Software crash safe",
+                                                 num_objs => 2300,
+                                                 used_space => 49152,
+                );
+                foreach $key (sort keys %cntr_container_properties_hash){
+                    my $value1 = $stats_hash{"c$i"}{'Container Properties'}{$key};
+                    my $value2 = $cntr_container_properties_hash{$key};
+                    like($value1,qr/$value2/,"ZSStatistics-->Container Properties:$key=$value2");
+                }
+
+                print "Overall ZS Statistics:\n";
+=pod
+                print "check statistics of Flash statistics\n";
+                my %flash_statistics_hash = (
+                                                 #num_items_flash => 2097152,
+                                                 num_items_created => 2300000,
+                                                 #num_evictions_flash => 202848,
+                                                 flash_space_allocated => 67108864,
+                                                 flash_space_consumed => 1073741824,
+                );
+                foreach $key (sort keys %flash_statistics_hash){
+                    my $value1 = $stats_hash{"Overall ZS Statistics"}{'Flash statistics'}{$key};
+                    my $value2 = $flash_statistics_hash{$key};
+                    like($value1,qr/$value2/,"ZSStatistics-->Flash statistics:$key=$value2");
+                }
+
+                print "check statistics of Application requests\n";
+                my %application_requests_hash = (
+                                                 #num_created_objs_with_expiry => 2300000,
+                                                 #num_put_objs => 3,
+                                                 #num_set_objs_with_expiry => 7,
+                                                 num_get_objs => 2,
+                                                 num_sync_to_flash => 2,
+                                                 num_flush_objs => 2,
+                                                 num_set_objs_with_expiry => 2,
+
+                );
+                foreach $key (sort keys %application_requests_hash){
+                    my $value1 = $stats_hash{"Overall ZS Statistics"}{'     Application requests'}{$key};
+                    my $value2 = $application_requests_hash{$key};
+                    like($value1,qr/$value2/,"ZSStatistics-->Application requests:$key=$value2");
+                }
+=cut
+                print "check statistics of Cache to Flash Manager requests\n";
+                my %cache_to_flash_manager_requests_hash = (
+                                       cache_hits => 0,
+                                       num_set_objs_and_put => 2,
+                                       num_flush_objs => 2,
+                                        num_get_objs_to_read => 2,
+                                        cache_misses => 0,
+                 );
+                foreach $key (sort keys %cache_to_flash_manager_requests_hash){
+                    my $value1 = $stats_hash{"Overall ZS Statistics"}{'Cache to Flash Manager requests'}{$key};
+                    my $value2 = $cache_to_flash_manager_requests_hash{$key};
+                    like($value1,qr/$value2/,"ZSStatistics-->Cache to Flash Manager requests:$key=$value2");
+                }
+
+                print "check statistics of Flash Manager responses to cache\n";
+                my %flash_manager_responses_to_cache_hash = (
+                                         num_get_objs_to_read_completed => 2,
+                                         num_flush_objs_completed => 2,
+                                         num_set_objs_completed => 2,
+                 );
+                foreach $key (sort keys %flash_manager_responses_to_cache_hash){
+                    my $value1 = $stats_hash{"Overall ZS Statistics"}{'Flash Manager responses to cache'}{$key};
+                    my $value2 = $flash_manager_responses_to_cache_hash{$key};
+                    like($value1,qr/$value2/,"ZSStatistics-->Flash Manager responses to cache:$key=$value2");
+                }
+
+                print "check statistics of Flash Manager requests/responses\n";
+                my %flash_manager_requests_responses_hash = (
+                                            num_get_objs => 2,
+                                            num_set_objs => 4,
+                                            num_objs_data => 2,
+
+                  );
+                foreach $key (sort keys %flash_manager_requests_responses_hash){
+                    my $value1 = $stats_hash{"Overall ZS Statistics"}{'Flash Manager requests/responses'}{$key};
+                    my $value2 = $flash_manager_requests_responses_hash{$key};
+                    like($value1,qr/$value2/,"ZSStatistics-->Flash Manager requests/responses:$key=$value2");
+                }
+
+                CloseContainer($node->conn(0),$cguid);
+                DeleteContainer($node->conn(0),$cguid);
+                $ret = $node->stop();
+                like($ret, qr/OK.*/, 'Node stop');
+                $ret = $node->start(ZS_REFORMAT  => 1,);
+                like($ret, qr/OK.*/, 'Node start');
+        
+
+}
+
+
+sub test_init {
+    $node = Fdftest::Node->new(
+                ip     => "127.0.0.1", 
+                port   => "24422",
+                nconn  => 1,
+            );
+
+}
+
+sub test_clean {
+    $node->stop();
+    $node->set_ZS_prop(ZS_REFORMAT  => 1);
+
+    return;
+}
+
+#
+# main
+#
+{
+    test_init();
+
+    test_run();
+
+    test_clean();
+
+}
+
+
+# clean ENV
+END {
+    $node->clean();
+}
+
+

@@ -1,0 +1,185 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/schooner-trunk/!svn/ver/23110/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr
+END
+18_threads_setprop_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/schooner-trunk/!svn/ver/22971/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/18_threads_setprop_and_rename_cntr.t
+END
+10_threads_read_obj_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/schooner-trunk/!svn/ver/22958/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/10_threads_read_obj_and_rename_cntr.t
+END
+22_threads_rename_the_same_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/schooner-trunk/!svn/ver/22998/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/22_threads_rename_the_same_cntr.t
+END
+21_threads_multi_obj_ops_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/schooner-trunk/!svn/ver/23040/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/21_threads_multi_obj_ops_and_rename_cntr.t
+END
+25_rename_65k_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/schooner-trunk/!svn/ver/23110/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/25_rename_65k_cntr.t
+END
+01_rename_cntr_after_close_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/schooner-trunk/!svn/ver/22745/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/01_rename_cntr_after_close_cntr.t
+END
+02_rename_cntr_after_del_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/schooner-trunk/!svn/ver/22745/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/02_rename_cntr_after_del_cntr.t
+END
+03_rename_cntr_after_stop_node.t
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/schooner-trunk/!svn/ver/22996/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/03_rename_cntr_after_stop_node.t
+END
+04_rename_cntr_after_restart_node.t
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/schooner-trunk/!svn/ver/22945/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/04_rename_cntr_after_restart_node.t
+END
+24_del_cntr_when_repeat_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/schooner-trunk/!svn/ver/22996/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/24_del_cntr_when_repeat_rename_cntr.t
+END
+09_threads_update_obj_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/schooner-trunk/!svn/ver/22745/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/09_threads_update_obj_and_rename_cntr.t
+END
+07_repeat_restart_node_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/schooner-trunk/!svn/ver/22958/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/07_repeat_restart_node_and_rename_cntr.t
+END
+13_threads_rangequery_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/schooner-trunk/!svn/ver/22996/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/13_threads_rangequery_and_rename_cntr.t
+END
+12_threads_enumerate_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/schooner-trunk/!svn/ver/22978/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/12_threads_enumerate_and_rename_cntr.t
+END
+31_rename_multi_cntrs_with_the_same_cname.t
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/schooner-trunk/!svn/ver/22977/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/31_rename_multi_cntrs_with_the_same_cname.t
+END
+05_repeat_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/schooner-trunk/!svn/ver/22945/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/05_repeat_rename_cntr.t
+END
+19_threads_getprop_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/schooner-trunk/!svn/ver/22971/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/19_threads_getprop_and_rename_cntr.t
+END
+23_kill_node_when_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/schooner-trunk/!svn/ver/22996/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/23_kill_node_when_rename_cntr.t
+END
+14_threads_open_cntr_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/schooner-trunk/!svn/ver/22996/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/14_threads_open_cntr_and_rename_cntr.t
+END
+08_threads_write_obj_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/schooner-trunk/!svn/ver/22801/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/08_threads_write_obj_and_rename_cntr.t
+END
+28_rename_cntr_with_cname_out_of_bound.t
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/schooner-trunk/!svn/ver/22977/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/28_rename_cntr_with_cname_out_of_bound.t
+END
+27_multi_cntr_ops_after_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/schooner-trunk/!svn/ver/22977/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/27_multi_cntr_ops_after_rename_cntr.t
+END
+11_threads_del_obj_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/schooner-trunk/!svn/ver/22958/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/11_threads_del_obj_and_rename_cntr.t
+END
+17_threads_getcntrs_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/schooner-trunk/!svn/ver/22971/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/17_threads_getcntrs_and_rename_cntr.t
+END
+06_repeat_restart_node_and_reopen_renamed_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/schooner-trunk/!svn/ver/22945/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/06_repeat_restart_node_and_reopen_renamed_cntr.t
+END
+15_threads_close_cntr_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/schooner-trunk/!svn/ver/22971/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/15_threads_close_cntr_and_rename_cntr.t
+END
+16_threads_del_cntr_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/schooner-trunk/!svn/ver/22996/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/16_threads_del_cntr_and_rename_cntr.t
+END
+26_multi_obj_ops_after_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/schooner-trunk/!svn/ver/22745/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/26_multi_obj_ops_after_rename_cntr.t
+END
+20_threads_multi_cntr_ops_and_rename_cntr.t
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/schooner-trunk/!svn/ver/22971/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/20_threads_multi_cntr_ops_and_rename_cntr.t
+END
+29_rename_cntr_with_invalid_cname.t
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/schooner-trunk/!svn/ver/22977/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/RenameCntr/29_rename_cntr_with_invalid_cname.t
+END

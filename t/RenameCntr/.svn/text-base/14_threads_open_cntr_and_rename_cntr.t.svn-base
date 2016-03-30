@@ -1,0 +1,142 @@
+# file:
+# author: Runhan Mao(Monica)
+# email: runhanmao@hengtiansoft.com
+# date: April 8, 2015
+# description:
+
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use threads;
+
+use FindBin qw($Bin);
+use lib "$Bin/../../wrapper/lib";
+use Fdftest::Fdfapi;
+use Fdftest::Node;
+use Fdftest::BasicTest;
+use Fdftest::Stress;
+use Test::More 'no_plan';
+
+my $node; 
+my $ncntr = 10;
+
+sub worker_rename {
+    my ($con,$cguid, $cname) = @_;
+    my $ret;
+    $ret=ZSRename($con, $cguid, "rename_$cname");
+    like($ret,qr/OK.*/,$ret);
+    $ret=ZSRename($con, $cguid, "rename_$cname");
+    like($ret,qr/Error.*/,$ret);
+}
+
+sub worker_opencntr {
+    my ($con, $cguid, $size, @prop) = @_;
+    my $ret;
+    foreach my $p(@prop){
+        for(0 .. $ncntr-1){
+            $ret = ZSOpen($node->conn(0), "ctr-$_","ZS_CTNR_RW_MODE",$size,$$p[0],$$p[1],$$p[2]);
+    	}
+    }
+}
+
+sub test_run {
+    my ($ret, $cguid);
+    my @cguids;
+    my $loop = 20;
+    my $size = 0;
+    my $keyoff = 1000;
+    my @prop  = ([3,"ZS_DURABILITY_HW_CRASH_SAFE","no"]);
+    my @data = ([50, 64000, 6250], [100, 128000, 6250], [150, 512, 37500]);
+    my @threads = ();
+    my $cname;
+
+    $ret = $node->start(ZS_REFORMAT  => 1,);
+    like($ret, qr/OK.*/, 'Node started');
+
+    foreach my $p(@prop){
+        @cguids = ();
+        for(0 .. $ncntr-1){
+            $ret=OpenContainer($node->conn(0), "ctr-$_","ZS_CTNR_CREATE",$size,$$p[0],$$p[1],$$p[2]);
+            $cguid = $1 if($ret =~ /OK cguid=(\d+)/);
+            push(@cguids, $cguid);
+            foreach my $d(@data){
+                WriteReadObjects($node->conn(0), $cguid, $keyoff, $$d[0], $keyoff, $$d[1], $$d[2]);
+                $keyoff = $keyoff + $$d[0]*$$d[2];
+            }
+                $keyoff = 1000;
+
+        }
+
+        for(@cguids){
+            $ret = ZSClose($node->conn(0), $_);
+            like ($ret, qr/^OK.*/, $ret);
+        }
+        
+        @threads = ();
+        foreach(0..$ncntr-1)
+        {    
+		    $cname = "ctr-$_";        
+            push(@threads, threads->new (\&worker_rename, $node->conn(2*$_), $cguids[$_],  $cname));
+            push(@threads, threads->new (\&worker_opencntr, $node->conn(2*$_+1), $cguids[$_], $size, @prop));
+        }
+        $_->join for (@threads);
+
+        $ret = $node->stop();
+        like($ret, qr/OK.*/, "Node stop.");
+
+        $ret = $node->start(ZS_REFORMAT => 0);
+        like($ret,qr/OK.*/,"Node Start: ZS_REFORMAT=0");
+        
+        for(0 .. $ncntr-1){
+            $ret=OpenContainer($node->conn(0), "rename_ctr-$_","ZS_CTNR_RW_MODE",$size,$$p[0],$$p[1],$$p[2]);
+            
+            foreach my $d(@data){
+                $ret=ReadObjects($node->conn(0), $cguids[$_], $keyoff, $$d[0], $keyoff, $$d[1], $$d[2]);
+                $keyoff = $keyoff + $$d[0]*$$d[2];
+            }
+            $keyoff = 1000;
+        }
+
+        @cguids = GetContainers($node->conn(0), $ncntr);
+
+        for(@cguids){
+            $ret = ZSClose($node->conn(0), $_);
+            like ($ret, qr/^OK.*/, $ret);
+            $ret = ZSDelete($node->conn(0), $_);
+            like ($ret, qr/^OK.*/, $ret);
+        }   
+    }
+}
+
+sub test_init {
+    $node = Fdftest::Node->new(
+        ip     => "127.0.0.1",
+        port   => "24422",
+        nconn  => $ncntr*2,
+    );
+}
+
+sub test_clean {
+    $node->stop();
+    $node->set_ZS_prop(ZS_REFORMAT  => 1);
+
+    return;
+}
+
+#
+# main
+#
+{
+    test_init();
+
+    test_run();
+
+    test_clean();
+}
+
+# clean ENV
+END {
+    $node->clean();
+}

@@ -1,0 +1,91 @@
+# file:10553.t
+# author: Jing Xu(Lee)
+# email: leexu@hengtiansoft.com
+# date: Mar 18, 2013
+# description:
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use FindBin qw($Bin);
+use lib "$Bin/../../wrapper/lib";
+use Fdftest::Fdfapi;
+use Fdftest::Node;
+use Fdftest::TestCase;
+use Data::Dumper;
+use Test::More tests => 10;
+
+my $node;
+
+sub test_run {
+
+    my $ret;
+    my $cguid;
+    my $nops = 32768;
+
+    $ret = $node->start (ZS_REFORMAT => 1,);
+    like ($ret, qr/OK.*/, 'Node start');
+
+    #OpenContainer ($conn,$ctrname,$flags,$size,$choice,$durab,$async_writes)
+    $ret = OpenContainer ($node->conn (0), "demo0", "ZS_CTNR_CREATE", 71680, 4, "ZS_DURABILITY_HW_CRASH_SAFE", "no");
+    $cguid = $1 if ($ret =~ /OK cguid=(\d+)/);
+
+    #WriteReadObjects($conn,$cguid,$keyoff,$keylen,$dataoff,$datalen,$nops,$flag)
+    WriteReadObjects ($node->conn (0), $cguid, 1, 250, 1, 774, $nops, "ZS_WRITE_MUST_NOT_EXIST");
+
+    foreach (0 .. 1) {
+        my $keyoff = $_ * 16384 + 1;
+        DeleteObjects ($node->conn (0), $cguid, $keyoff, 250, 10485);
+    }
+
+    sleep(30);
+
+    my @cntr_array = $node->dump_zsstats_log ();
+    my %stats_hash = $node->get_details_hash  ();
+    my $slab_gc_segments_compacted = $stats_hash{'Overall ZS Statistics'}{'Flash statistics'}{'slab_gc_segments_compacted'};
+    my $slab_free_segments = $stats_hash{'Overall ZS Statistics'}{'Flash statistics'}{'slab_free_segments'};
+    is ($slab_gc_segments_compacted, undef, "Compact $slab_gc_segments_compacted segments ");
+    is ($slab_free_segments, undef, "Free segment list count is $slab_gc_segments_compacted");
+
+#   WriteReadObjects ($node->conn (1), $cguid, 1, 200, 1, 1848, $nops / 2, "ZS_WRITE_MUST_NOT_EXIST");
+
+    CloseContainer ($node->conn (0), $cguid);
+    DeleteContainer ($node->conn (0), $cguid);
+
+    return;
+}
+
+sub test_init {
+    $node = Fdftest::Node->new (
+        ip    => "127.0.0.1",
+        port  => "24422",
+        nconn => 1,
+    );
+
+}
+
+sub test_clean {
+    $node->stop ();
+    $node->set_ZS_prop (ZS_REFORMAT => 1);
+
+    return;
+}
+
+#
+# main
+#
+{
+    test_init ();
+
+    test_run ();
+
+    test_clean ();
+}
+
+# clean ENV
+END {
+    $node->clean ();
+}
+

@@ -1,0 +1,401 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/schooner-trunk/!svn/ver/22973/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck
+END
+Z21_metafault_slabbitmap_recovery_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z21_metafault_slabbitmap_recovery_64K.t
+END
+Z27_metafault_superblock_recovery_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z27_metafault_superblock_recovery_multi_containers_64K.t
+END
+Z38_metafault_flog_recovery_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/schooner-trunk/!svn/ver/22347/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z38_metafault_flog_recovery_multi_containers_128K.t
+END
+BAS_01_OneModeCtnr_64K_ObjSize_NormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_01_OneModeCtnr_64K_ObjSize_NormalShutdown.t
+END
+Z13_metafault_chkpoint_recovery_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z13_metafault_chkpoint_recovery_64K.t
+END
+02_dd_check_meta_suc_btree_fail.t
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/schooner-trunk/!svn/ver/21961/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/02_dd_check_meta_suc_btree_fail.t
+END
+Z40_metafault_pot_recovery_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z40_metafault_pot_recovery_multi_containers_128K.t
+END
+Z12_metafault_class_desc_recovery_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z12_metafault_class_desc_recovery_128K.t
+END
+Z45_metafault_chkpoint_recovery_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z45_metafault_chkpoint_recovery_multi_containers_64K.t
+END
+BAS_03_OneModeCtnr_64K_ObjSize_UnnormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_03_OneModeCtnr_64K_ObjSize_UnnormalShutdown.t
+END
+Z06_metafault_shard_prop_recovery_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z06_metafault_shard_prop_recovery_128K.t
+END
+BAS_11_OneModeCtnr_64K_ObjSize_ReZsck_After_Restart_NormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/svn/schooner-trunk/!svn/ver/22915/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_11_OneModeCtnr_64K_ObjSize_ReZsck_After_Restart_NormalShutdown.t
+END
+Z37_metafault_flog_recovery_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/schooner-trunk/!svn/ver/22347/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z37_metafault_flog_recovery_multi_containers_64K.t
+END
+Z02_metafault_label_recovery_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z02_metafault_label_recovery_128K.t
+END
+Z07_metafault_shard_desc_recovery_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z07_metafault_shard_desc_recovery_64K.t
+END
+Z47_normal_insert_large_data_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z47_normal_insert_large_data_multi_containers_64K.t
+END
+BAS_12_OneModeCtnr_128K_ObjSize_ReZsck_After_Restart_NormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_12_OneModeCtnr_128K_ObjSize_ReZsck_After_Restart_NormalShutdown.t
+END
+Z03_metafault_superblock_recovery_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z03_metafault_superblock_recovery_64K.t
+END
+Z01_metafault_label_recovery_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z01_metafault_label_recovery_64K.t
+END
+Z09_metafault_seg_list_recovery_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z09_metafault_seg_list_recovery_64K.t
+END
+Z20_metafault_potbitmap_recovery_128KB.t
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z20_metafault_potbitmap_recovery_128KB.t
+END
+Z32_metafault_shard_desc_recovery_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z32_metafault_shard_desc_recovery_multi_containers_128K.t
+END
+Z42_metafault_potbitmap_recovery_multi_containers_128KB.t
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z42_metafault_potbitmap_recovery_multi_containers_128KB.t
+END
+BAS_06_OneModeCtnr_128K_ObjSize_Not_Finish_NormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_06_OneModeCtnr_128K_ObjSize_Not_Finish_NormalShutdown.t
+END
+BAS_08_OneModeCtnr_128K_ObjSize_Not_Finish_UnnormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_08_OneModeCtnr_128K_ObjSize_Not_Finish_UnnormalShutdown.t
+END
+Z04_metafault_superblock_recovery_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z04_metafault_superblock_recovery_128K.t
+END
+Z34_metafault_seg_list_recovery_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z34_metafault_seg_list_recovery_multi_containers_128K.t
+END
+Z31_metafault_shard_desc_recovery_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z31_metafault_shard_desc_recovery_multi_containers_64K.t
+END
+Z22_metafault_slabbitmap_recovery_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z22_metafault_slabbitmap_recovery_128K.t
+END
+BAS_02_OneModeCtnr_128K_ObjSize_NormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_02_OneModeCtnr_128K_ObjSize_NormalShutdown.t
+END
+Z14_metafault_chkpoint_recovery_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z14_metafault_chkpoint_recovery_128K.t
+END
+Z05_metafault_shard_prop_recovery_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z05_metafault_shard_prop_recovery_64K.t
+END
+BAS_05_OneModeCtnr_64K_ObjSize_Not_Finish_NormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_05_OneModeCtnr_64K_ObjSize_Not_Finish_NormalShutdown.t
+END
+Z16_metafault_flog_recovery_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/schooner-trunk/!svn/ver/22347/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z16_metafault_flog_recovery_128K.t
+END
+Z30_metafault_shard_prop_recovery_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z30_metafault_shard_prop_recovery_multi_containers_128K.t
+END
+Z43_metafault_slabbitmap_recovery_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z43_metafault_slabbitmap_recovery_multi_containers_64K.t
+END
+Z25_metafault_label_recovery_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z25_metafault_label_recovery_multi_containers_64K.t
+END
+Z48_normal_insert_large_data_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z48_normal_insert_large_data_multi_containers_128K.t
+END
+Z36_metafault_class_desc_recovery_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z36_metafault_class_desc_recovery_multi_containers_128K.t
+END
+Z15_metafault_flog_recovery_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/schooner-trunk/!svn/ver/22347/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z15_metafault_flog_recovery_64K.t
+END
+01_dd_check_meta_failed.t
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/schooner-trunk/!svn/ver/21961/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/01_dd_check_meta_failed.t
+END
+Z28_metafault_superblock_recovery_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z28_metafault_superblock_recovery_multi_containers_128K.t
+END
+Z11_metafault_class_desc_recovery_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z11_metafault_class_desc_recovery_64K.t
+END
+03_dd_check_meta_suc_btree_fail_2.t
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/schooner-trunk/!svn/ver/22359/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/03_dd_check_meta_suc_btree_fail_2.t
+END
+Z46_metafault_chkpoint_recovery_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z46_metafault_chkpoint_recovery_multi_containers_128K.t
+END
+stap_test.t
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/stap_test.t
+END
+Z35_metafault_class_desc_recovery_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z35_metafault_class_desc_recovery_multi_containers_64K.t
+END
+Z29_metafault_shard_prop_recovery_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z29_metafault_shard_prop_recovery_multi_containers_64K.t
+END
+Z19_metafault_potbitmap_recovery_64KB.t
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z19_metafault_potbitmap_recovery_64KB.t
+END
+Z39_metafault_pot_recovery_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z39_metafault_pot_recovery_multi_containers_64K.t
+END
+pwrite_catch_meta_check_fail.stp
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/schooner-trunk/!svn/ver/22861/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/pwrite_catch_meta_check_fail.stp
+END
+Z24_normal_insert_large_data_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z24_normal_insert_large_data_128K.t
+END
+BAS_10_OneModeCtnr_128K_ObjSize_DoubleZsck_NormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_10_OneModeCtnr_128K_ObjSize_DoubleZsck_NormalShutdown.t
+END
+Z08_metafault_shard_desc_recovery_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z08_metafault_shard_desc_recovery_128K.t
+END
+Z10_metafault_seg_list_recovery_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/schooner-trunk/!svn/ver/22973/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z10_metafault_seg_list_recovery_128K.t
+END
+pwrite_catch_btree_check_fail.stp
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/schooner-trunk/!svn/ver/22861/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/pwrite_catch_btree_check_fail.stp
+END
+Z18_metafault_pot_recovery_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z18_metafault_pot_recovery_128K.t
+END
+Z23_normal_insert_large_data_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z23_normal_insert_large_data_64K.t
+END
+Z41_metafault_potbitmap_recovery_multi_containers_64KB.t
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z41_metafault_potbitmap_recovery_multi_containers_64KB.t
+END
+Z44_metafault_slabbitmap_recovery_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z44_metafault_slabbitmap_recovery_multi_containers_128K.t
+END
+Z26_metafault_label_recovery_multi_containers_128K.t
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z26_metafault_label_recovery_multi_containers_128K.t
+END
+BAS_04_OneModeCtnr_128K_ObjSize_UnnormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_04_OneModeCtnr_128K_ObjSize_UnnormalShutdown.t
+END
+Z17_metafault_pot_recovery_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/schooner-trunk/!svn/ver/22302/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z17_metafault_pot_recovery_64K.t
+END
+BAS_07_OneModeCtnr_64K_ObjSize_Not_Finish_UnnormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_07_OneModeCtnr_64K_ObjSize_Not_Finish_UnnormalShutdown.t
+END
+Z33_metafault_seg_list_recovery_multi_containers_64K.t
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/schooner-trunk/!svn/ver/22304/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/Z33_metafault_seg_list_recovery_multi_containers_64K.t
+END
+BAS_09_OneModeCtnr_64K_ObjSize_DoubleZsck_NormalShutdown.t
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/schooner-trunk/!svn/ver/22914/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Zsck/BAS_09_OneModeCtnr_64K_ObjSize_DoubleZsck_NormalShutdown.t
+END

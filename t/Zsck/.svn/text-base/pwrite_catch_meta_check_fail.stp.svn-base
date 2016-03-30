@@ -1,0 +1,285 @@
+#################
+# ZSWriteObject #
+#################
+
+#global pwrite_count
+global pwrite_count_zs
+global pwrite_start = 123500
+global pwrite_end = 124000
+
+probe begin {
+#println("begin~")
+pwrite_count_zs=0
+}
+
+probe error {
+printf("pwrite_count_zs = %d\n", pwrite_count_zs)
+}
+
+#probe timer.s(60) {
+#pwrite_count_zs++
+#}
+
+#################################################################
+
+########## 
+# SAMPLE # 
+##########
+
+
+#################################################################
+
+########
+# APPS #
+########
+
+#################################################################
+
+#######
+# SDF #
+#######
+
+/*
+# SDF.NO1
+# flashBlockWrite -> pwrite @fdf-3.0/sdf/shared/getput_sim.c:67
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/shared/getput_sim.c:67") {
+#  if (pwrite_count_zs != 0) {
+    println(">>>>>>>>>>>>>>>>>>>>>>getput_sim.c:67")
+    println($$parms)
+    set_kernel_string($buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<getput_sim.c:67")
+    println("")
+#  }
+}
+*/
+
+# SDF.NO2
+# mcd_fth_aio_blk_write_low -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_aio.c:434
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_aio.c:434") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_aio.c:434")
+    println($$parms)
+    set_kernel_string($buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_aio.c:434")
+    println("")
+  }
+}
+
+/*
+# SDF.NO3
+# write_fault_injector -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_aio.c:1701
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_aio.c:1701") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_aio.c:1701")
+    println($$parms)
+    set_kernel_string($buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_aio.c:1701")
+    println("")
+  }
+}
+
+# SDF.NO4
+# mcd_corrupt_object_table -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_check.c:856
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_check.c:856") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_check.c:856")
+    println($$parms)
+    set_kernel_string($buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_check.c:856")
+    println("")
+  }
+}
+
+# SDF.NO5
+# mcd_corrupt_label -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_check.c:1378
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_check.c:1378") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_check.c:1378")
+    println($$parms)
+    set_kernel_string($label, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_check.c:1378")
+    println("")
+  }
+}
+
+# SDF.NO6
+# mcd_corrupt_superblock -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_check.c:1391
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_check.c:1391") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_check.c:1391")
+    println($$parms)
+    set_kernel_string($tmp_buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_check.c:1391")
+    println("")
+  }
+}
+
+# SDF.NO7
+# mcd_corrupt_shard_properties -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_check.c:1425
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_check.c:1425") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_check.c:1425")
+    println($$parms)
+    set_kernel_string($tmp_buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_check.c:1425")
+    println("")
+  }
+}
+
+# SDF.NO8
+# mcd_corrupt_shard_descriptor -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_check.c:1467
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_check.c:1467") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_check.c:1467")
+    println($$parms)
+    set_kernel_string($tmp_buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_check.c:1467")
+    println("")
+  }
+}
+
+# SDF.NO9
+# mcd_corrupt_segment_list -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_check.c:1484
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_check.c:1484") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_check.c:1484")
+    println($$parms)
+    set_kernel_string($buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_check.c:1484")
+    println("")
+  }
+}
+
+# SDF.NO10
+# mcd_corrupt_class_descriptor -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_check.c:1506
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_check.c:1506") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_check.c:1506")
+    println($$parms)
+    set_kernel_string($tmp_buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_check.c:1506")
+    println("")
+  }
+}
+
+# SDF.NO11
+# mcd_corrupt_okpt_descriptor -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_check.c:1529
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_check.c:1529") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_check.c:1529")
+    println($$parms)
+    set_kernel_string($tmp_buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_check.c:1529")
+    println("")
+  }
+}
+
+# SDF.NO12
+# mcd_corrupt_potbm -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_check.c:1541
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_check.c:1541") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_check.c:1541")
+    println($$parms)
+    set_kernel_string($tmp_buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_check.c:1541")
+    println("")
+  }
+}
+
+# SDF.NO13
+# mcd_corrupt_slabbm -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_check.c:1553
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_check.c:1553") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_check.c:1553")
+    println($$parms)
+    set_kernel_string($tmp_buf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_check.c:1553")
+    println("")
+  }
+}
+
+# SDF.NO14
+# fbio_flush -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_rec.c:2382
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_rec.c:2382") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_rec.c:2382")
+    println($$parms)
+    set_kernel_string($fbio->abuf, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_rec.c:2382")
+    println("")
+  }
+}
+*/
+# SDF.NO15
+# flog_persist -> pwrite @fdf-3.0/sdf/ssd/fifo/mcd_rec.c:6794
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/sdf/ssd/fifo/mcd_rec.c:6794") {
+  pwrite_count_zs++
+  if ( pwrite_start<pwrite_count_zs && pwrite_count_zs<pwrite_end) {
+    println(">>>>>>>>>>>>>>>>>>>>>>mcd_rec.c:6794")
+    println($$parms)
+    set_kernel_string($sector, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<mcd_rec.c:6794")
+    println("")
+  }
+}
+
+#################################################################
+
+#########
+# UTILS #
+#########
+
+/*
+# UTILS.NO1
+# main -> pwrite @fdf-3.0/utils/ssdtest/main.c:766
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/utils/ssdtest/main.c:766") {
+  if (pwrite_count_zs != 0) {
+    println(">>>>>>>>>>>>>>>>>>>>>>main.c:766")
+    println($$parms)
+    set_kernel_string($p, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<main.c:766")
+    println("")
+  }
+}
+
+# UTILS.NO2
+# main -> pwrite @fdf-3.0/utils/ssdtest/main.c:866
+#
+probe process("zs_sdk/lib/libzs.so").statement("*@*fdf-3.0/utils/ssdtest/main.c:866") {
+  if (pwrite_count_zs != 0) {
+    println(">>>>>>>>>>>>>>>>>>>>>>main.c:866")
+    println($$parms)
+    set_kernel_string($p, "test") 
+    println("<<<<<<<<<<<<<<<<<<<<<<main.c:866")
+    println("")
+  }
+}

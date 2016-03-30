@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/schooner-trunk/!svn/ver/23035/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog
+END
+11_flog_nvram_multi_instance_reset_during_write.t
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/schooner-trunk/!svn/ver/23012/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/11_flog_nvram_multi_instance_reset_during_write.t
+END
+12_flog_nvram_multi_instance_repeat_reset_during_write.t
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/schooner-trunk/!svn/ver/23035/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/12_flog_nvram_multi_instance_repeat_reset_during_write.t
+END
+02_flog_file_single_normal_recovery.t
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/schooner-trunk/!svn/ver/22725/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/02_flog_file_single_normal_recovery.t
+END
+08_flog_nvram_single_reboot_during_read.t
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/schooner-trunk/!svn/ver/22959/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/08_flog_nvram_single_reboot_during_read.t
+END
+06_flog_switch_mode_test.t
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/schooner-trunk/!svn/ver/22989/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/06_flog_switch_mode_test.t
+END
+07_flog_multi_with_two_modes_test.t
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/schooner-trunk/!svn/ver/22991/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/07_flog_multi_with_two_modes_test.t
+END
+05_flog_nvram_multi_tranxstart_update_kill_node_test.t
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/schooner-trunk/!svn/ver/22822/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/05_flog_nvram_multi_tranxstart_update_kill_node_test.t
+END
+03_flog_nvram_single_normal_recovery.t
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/schooner-trunk/!svn/ver/22822/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/03_flog_nvram_single_normal_recovery.t
+END
+10_flog_nvram_multi_instance_reset_after_finish_write.t
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/schooner-trunk/!svn/ver/23012/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/10_flog_nvram_multi_instance_reset_after_finish_write.t
+END
+13_flog_nvram_multi_instance_reset_during_open_container.t
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/schooner-trunk/!svn/ver/23012/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/13_flog_nvram_multi_instance_reset_during_open_container.t
+END
+16_invalid_flog_nvram_config_test.t
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/schooner-trunk/!svn/ver/22738/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/16_invalid_flog_nvram_config_test.t
+END
+14_flog_nvram_multi_instance_reset_during_delete_container.t
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/schooner-trunk/!svn/ver/23012/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/14_flog_nvram_multi_instance_reset_during_delete_container.t
+END
+04_flog_nvram_multi_normal_update_recovery_test.t
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/schooner-trunk/!svn/ver/22947/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/04_flog_nvram_multi_normal_update_recovery_test.t
+END
+09_flog_nvram_single_reboot_during_write.t
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/schooner-trunk/!svn/ver/22822/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/09_flog_nvram_single_reboot_during_write.t
+END
+15_flog_nvram_multi_diff_flogfile_test.t
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/schooner-trunk/!svn/ver/22822/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/15_flog_nvram_multi_diff_flogfile_test.t
+END
+01_flog_parameter_config_test.t
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/schooner-trunk/!svn/ver/22951/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/Flog/01_flog_parameter_config_test.t
+END

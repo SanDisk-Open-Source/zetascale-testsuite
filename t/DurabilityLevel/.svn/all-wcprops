@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/schooner-trunk/!svn/ver/22726/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel
+END
+09_multi_container_with_PERIODIC.t
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/09_multi_container_with_PERIODIC.t
+END
+07_dynamic_workload_with_SW_CRASH_SAFE.t
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/07_dynamic_workload_with_SW_CRASH_SAFE.t
+END
+10_multi_container_with_SW_CRASH_SAFE.t
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/10_multi_container_with_SW_CRASH_SAFE.t
+END
+11_multi_container_with_diff_durability_level.t
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/11_multi_container_with_diff_durability_level.t
+END
+hw_sf_test_step1.t
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/hw_sf_test_step1.t
+END
+hw_sf_test_step2.t
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/hw_sf_test_step2.t
+END
+03_test_with_SW_CRASH_SAFE.t
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/03_test_with_SW_CRASH_SAFE.t
+END
+04_test_with_SW_CRASH_SAFE_and_LOG_FLUSH_DIR_setting.t
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/04_test_with_SW_CRASH_SAFE_and_LOG_FLUSH_DIR_setting.t
+END
+06_dynamic_workload_with_PERIODIC.t
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/06_dynamic_workload_with_PERIODIC.t
+END
+12_repeate_recovery_with_SW_CRASH_SAFE.t
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/12_repeate_recovery_with_SW_CRASH_SAFE.t
+END
+13_dynamic_workload_multi_container_with_SW_CRASH_SAFE.t
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/13_dynamic_workload_multi_container_with_SW_CRASH_SAFE.t
+END
+02_test_with_PERIODIC.t
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/02_test_with_PERIODIC.t
+END
+05_test_with_HW_CRASH_SAFE.t
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/schooner-trunk/!svn/ver/22726/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/05_test_with_HW_CRASH_SAFE.t
+END
+01_test_with_default_setting.t
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/schooner-trunk/!svn/ver/21795/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t/DurabilityLevel/01_test_with_default_setting.t
+END

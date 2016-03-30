@@ -1,0 +1,103 @@
+# file: basic.pl
+# author: yiwen sun
+# email: yiwensun@hengtiansoft.com
+# date: Oct 15, 2012
+# description: basic sample for testcase
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Switch;
+use threads;
+
+use FindBin qw($Bin);
+use lib "$Bin/../../wrapper/lib";
+use Fdftest::Fdfapi;
+use Fdftest::Stress;
+use Fdftest::Node;
+use Test::More tests => 6;
+
+my $node; 
+my $nconn=256;
+my $loop =100;
+$nconn=20;
+$loop=10;
+
+sub test_run {
+    my $ret;
+    my $cguid;
+	my @threads;
+	my $nop = 8;
+	my $size = 108000000;
+    $ret = $node->start(
+			   gdb_switch	=> 1,
+               ZS_REFORMAT  => 1,
+           );
+    like($ret, qr/OK.*/, 'Node start');
+    
+	# Create containers with $nconn connections 
+	my $ctrname = 'ctrn-01';
+	$ret = ZSOpen($node->conn(0),$ctrname, "ZS_CTNR_CREATE",108000000,3);
+
+    like($ret, qr/OK.*/, $ctrname."ZSCreateContainer");
+    if($ret =~ /OK cguid=(\d+)/){
+		$cguid = $1;
+	}else{
+		return;
+	}
+
+	for( 0 .. $loop){
+		my $keyoffset = 0 + $_*$nconn;
+		@threads=();
+		for ( 0 .. $nconn){
+			$keyoffset = $keyoffset + $_;
+			push(@threads, threads->new(\&ZSSetGet,$node->conn($_),$cguid, $keyoffset));
+		}
+		$_->join for (@threads);
+		ZSClose($node->conn(0),$cguid);
+		ZSOpen($node->conn(0),$ctrname,"ZS_CTNR_RW_MODE",$size);
+	}
+
+	$ret = ZSGetContainers($node->conn(0));
+	print $ret;
+	$ret = ZSClose($node->conn(0),$cguid);
+    return;
+}
+
+
+sub test_init {
+    $node = Fdftest::Node->new(
+                ip     => "127.0.0.1", 
+                port   => "24422",
+                nconn  => $nconn,
+            );
+    
+    return;
+}
+
+sub test_clean {
+    $node->stop();
+    $node->set_ZS_prop(ZS_REFORMAT  => 1);
+
+    return;
+}
+
+#
+# main
+#
+{
+    test_init();
+    
+    test_run();
+
+    test_clean();
+}
+
+
+# clean ENV
+END {
+    $node->clean();
+}
+
+

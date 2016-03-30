@@ -1,0 +1,204 @@
+# file:
+# author: yiwen lu
+# email: yiwenlu@hengtiansoft.com
+# date: Jan 3, 2013
+# description:
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Switch;
+
+
+use FindBin qw($Bin);
+use lib "$Bin/../../wrapper/lib";
+use Fdftest::Fdfapi;
+use Fdftest::Node;
+use Fdftest::TestCase;
+use Test::More tests => 7664;
+
+my $node; 
+sub test_run {
+    my $cguid;
+    my $ret; 
+    my @cguids;    
+    my $nctr = 50;
+    my $loop = 1000;
+    my $rand;
+    my $option;
+    my $j = 0;
+    my @prop = ([4, "ZS_DURABILITY_HW_CRASH_SAFE", "no"],);
+    #my @data = ([64000, 1], [128000, 1], [512, 6]);
+    my @data = ([16000, 1], [32000, 1], [64000, 1], [128000, 1], [48, 20]);
+    
+    $ret = $node->start(ZS_REFORMAT => 1);    
+    like($ret,qr/OK.*/,"Node Start: ZS_REFORMAT=1");
+    
+    foreach my $p(@prop){
+        my %cguid_cname;
+        my %cguid_key_data;
+        my $ctr_count=0;
+
+        foreach(0..$nctr-1)
+        {
+            $ret = OpenContainer($node->conn(0),"ctr-$_","ZS_CTNR_CREATE",0,$$p[0],$$p[1],$$p[2]);
+	    $cguid = $1 if ($ret =~ /OK cguid=(\d+)/);
+	    $cguids[$_]=$cguid;
+	    $cguid_cname{$cguid}="ctr-$_";
+	    $ctr_count++;
+	}
+	print "ctr_count=$ctr_count\n";
+	foreach (keys %cguid_cname)
+	{
+            print "$_ -- $cguid_cname{$_}\n";
+	}
+    
+	for(my $i=0; $i<$loop; $i++){
+            print "=loop:$i=\n";
+	    while(1){
+                $rand=int(rand($nctr));
+		$cguid=$cguids[$rand];
+		if($cguid ne ""){
+                    $option=int(rand(7));
+		    last;
+		}
+		else{
+                    $option=7;
+		    last;
+		}
+	    }
+       
+	    print "<rand=$rand--cguid=$cguid---$option>\n"; 
+	    switch($option) {
+                case (0) {
+                    print "Close&DeleteContainer\n";
+		    CloseContainer($node->conn(0),$cguid);
+		    DeleteContainer($node->conn(0),$cguid);
+		    $cguids[$rand] = "";
+		    delete $cguid_cname{"$cguid"};
+		    delete $cguid_key_data{"$cguid"};
+		    $ctr_count--;
+		}
+		case (1) {
+                    print "GetContainers\n";
+		    GetContainers($node->conn(0),$ctr_count);
+		}
+		case (2) {
+                    print "WriteReadObjects\n";
+
+		    print "cguid=$cguid,rand=$rand\n";
+		    if(exists $cguid_key_data{$cguid}){
+                        print "container is not empty!\n";
+			last;
+		    }
+#                    my $keyoff = int(rand(10000));
+#                    my $keylen = int(rand(240))+10;
+#                    my $datalen = int(rand(2000))+100;
+#                    my $nops = int(1048576*1024/$datalen/5);
+		    my ($keyoff,$keylen,$nops) = (0,100,700);
+		    print "($keyoff,$keylen,$keyoff,$nops)\n";
+                    foreach my $d(@data){
+                        WriteReadObjects($node->conn(0),$cguid,$keyoff,$keylen+$j,$keyoff,$$d[0],$nops*$$d[1]);
+                        $j++;
+                    }
+                    $j = 0;
+		    $cguid_key_data{$cguid}[0]=$keyoff;
+		    $cguid_key_data{$cguid}[1]=$keylen;
+		    $cguid_key_data{$cguid}[2]=$nops;
+		}
+		case (3) {
+                    print "EnumerateObjects\n";
+		    if(exists $cguid_key_data{$cguid}){  
+		        ContainerEnumerate($node->conn(0),$cguid,$cguid_key_data{$cguid}[2]*24);      
+		    }else{
+                        print "no objects exit\n";
+		    }
+		} 
+		case (4) {
+                    FlushContainer($node->conn(0),$cguid);
+		}
+		case (5) {
+                    if(exists $cguid_key_data{$cguid}){
+                        foreach my $d(@data){
+                            DeleteObjects($node->conn(0),$cguid,$cguid_key_data{$cguid}[0],$cguid_key_data{$cguid}[1]+$j,$cguid_key_data{$cguid}[2]*$$d[1]);
+                            $j++;
+                        }
+                        $j = 0;
+			delete $cguid_key_data{$cguid};
+		    }else{
+                        print "no objects exist\n";
+		    }
+		}
+		case (6) {
+                    $ret = $node->stop();
+		    like($ret,qr/OK.*/,"Node Stop");
+		    $ret = $node->start(ZS_REFORMAT => 0);
+		    like($ret,qr/OK.*/,"Node Start: REFORMAT=0");
+
+		    foreach(@cguids){
+                        if($_ ne ""){
+                            $ret = OpenContainer($node->conn(0),$cguid_cname{$_},"ZS_CTNR_RW_MODE",0,$$p[0],$$p[1],$$p[2]);
+			}
+		    }
+		}
+		case (7) {
+                    $ret = OpenContainer($node->conn(0),"ctr-$rand","ZS_CTNR_CREATE",0,$$p[0],$$p[1],$$p[2]);
+		    $cguid = $1 if ($ret =~ /OK cguid=(\d+)/);
+		    $cguids[$rand]=$cguid;
+		    $cguid_cname{$cguid}="ctr-$rand";
+		    $ctr_count++;
+		}
+		else{
+                    print "do nothing!\n";
+		}
+	    }
+       
+	    print "---ctr_count=$ctr_count\n"; 
+	    if(! %cguid_cname){
+                print "No Container any more!";
+		return;
+	    }
+        }
+
+        foreach(@cguids){
+            if($_ ne ""){
+                DeleteContainer($node->conn(0),$_);
+            }
+        }
+    }
+    return;
+}
+
+sub test_init {
+    $node = Fdftest::Node->new(
+                ip     => "127.0.0.1", 
+                port   => "24422",
+                nconn  => 1,
+            );
+}
+
+sub test_clean {
+    $node->stop();
+    $node->set_ZS_prop(ZS_REFORMAT  => 1);
+    return;
+}
+
+#
+# main
+#
+{
+    test_init();
+    
+    test_run();
+
+    test_clean();
+}
+
+
+# clean ENV
+END {
+    $node->clean();
+}
+
+

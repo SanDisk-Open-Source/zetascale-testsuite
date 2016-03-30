@@ -1,0 +1,151 @@
+# file: 
+# author: Xiaofeng Chen
+# email: xiaofengchen@hengtiansoft.com
+# date: Aug 15, 2014
+# description: 
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use threads;
+
+use FindBin qw($Bin);
+use lib "$Bin/../../wrapper/lib";
+use Fdftest::Fdfapi;
+use Fdftest::MultiNode;
+use Fdftest::BasicTest;
+use Test::More tests => 6;
+
+my $node; 
+my $node1;
+
+sub test_start_node {
+
+    my $ret;
+    
+    print "<<< Test with async_write=yes in 1st instance >>>.\n";
+    $ret = $node->start(
+               ZS_REFORMAT  => 1,
+           );
+    like($ret, qr/OK.*/, '1st instance started');
+}
+
+sub test_run_node {
+
+    my $ret;
+    my $cguid;
+
+    for(my $i=0; $i<=1; $i++){
+
+        subtest "Test with ctnr c$i" => sub {
+
+        	$ret=OpenContainer($node->conn(0), "c$i","ZS_CTNR_CREATE",1048576,$i,"ZS_DURABILITY_PERIODIC","yes");
+        	$cguid = $1 if($ret =~ /OK cguid=(\d+)/);
+            WriteReadObjects($node->conn(0), $cguid, 1000, 50, 1000, 50, 50000);
+            CloseContainer($node->conn(0), $cguid);
+            # DeleteContainer($node->conn(0), $cguid);
+
+        	# $ret=OpenContainer($node->conn(0), "c$i","ZS_CTNR_RW_MODE",1048576,$i,"ZS_DURABILITY_PERIODIC","yes");
+        	# $cguid = $1 if($ret =~ /OK cguid=(\d+)/);
+        }
+    }
+    return;
+}
+
+sub test_start_node1 {
+
+    my $ret;
+
+    print "<<< Test with async_write=yes in 2nd instance >>>.\n";
+    $ret = $node1->start(
+               ZS_REFORMAT  => 1,
+           );
+    like($ret, qr/OK.*/, '2nd instance started');
+}
+
+sub test_run_node1 {
+    
+    my $ret;
+    my $cguid;
+
+    for(my $i=0; $i<=1; $i++){
+
+        subtest "Test with ctnr c$i" => sub {
+
+        	$ret=OpenContainer($node1->conn(0), "c$i","ZS_CTNR_CREATE",1048576,$i,"ZS_DURABILITY_PERIODIC","yes");
+        	$cguid = $1 if($ret =~ /OK cguid=(\d+)/);
+            WriteReadObjects($node1->conn(0), $cguid, 1000, 50, 1000, 50, 50000);
+            CloseContainer($node1->conn(0), $cguid);
+            # DeleteContainer($node1->conn(0), $cguid);
+
+        	# $ret=OpenContainer($node1->conn(0), "c$i","ZS_CTNR_RW_MODE",1048576,$i,"ZS_DURABILITY_PERIODIC","yes");
+        	# $cguid = $1 if($ret =~ /OK cguid=(\d+)/);
+        }
+    }
+    return;
+}
+
+sub test_init {
+    $node = Fdftest::MultiNode->new(
+                ip          => "127.0.0.1", 
+                port        => "24422",
+                nconn       => 1,
+                stats_log   => "/tmp/24422/zsstats.log",
+                zs_log      => "/tmp/24422/zs.log",
+                unix_socket => "/tmp/24422/sock",
+            );
+
+    $node1 = Fdftest::MultiNode->new(
+                ip          => "127.0.0.1",
+                port        => "24423",
+                nconn       => 1,
+                stats_log   => "/tmp/24423/zsstats.log",
+                zs_log      => "/tmp/24423/zs.log",
+                unix_socket => "/tmp/24423/sock",
+            );
+}
+
+sub test_clean {
+    $node->stop();
+    $node->set_ZS_prop(ZS_REFORMAT  => 1);
+
+    $node1->stop();
+    $node1->set_ZS_prop(ZS_REFORMAT  => 1);
+    
+    return;
+}
+
+#
+# main
+#
+{
+    # export multi instance flag
+    $ENV{ZS_TEST_FRAMEWORK_SHARED} = 1;
+
+    test_init();
+
+    test_start_node();
+    test_start_node1();
+
+    # my @threads;
+    # push(@threads, threads->new(\&test_run_node));
+    # push(@threads, threads->new(\&test_run_node1));
+    # $_->join for (@threads);
+
+    my $thread = threads->create('test_run_node');
+    my $thread1 = threads->create('test_run_node1');
+    $thread->join();
+    $thread1->join();
+
+    # test_run_node();
+    # test_run_node1();
+
+    test_clean();
+}
+
+# clean ENV
+END {
+    $node->clean();
+    $node1->clean();
+}

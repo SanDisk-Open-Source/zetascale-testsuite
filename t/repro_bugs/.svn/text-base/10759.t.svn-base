@@ -1,0 +1,103 @@
+# file: basic.pl
+# author: yiwen sun
+# email: yiwensun@hengtiansoft.com
+# date: Oct 15, 2012
+# description: basic sample for testcase
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Switch;
+use threads;
+
+use FindBin qw($Bin);
+use lib "$Bin/../../wrapper/lib";
+use Fdftest::Fdfapi;
+use Fdftest::Stress;
+use Fdftest::Node;
+use Test::More tests => 3;
+
+#tests =( 6*($nconn+1) + 2) * ($loop+1) + 4
+my $node;
+my $nconn = 256;
+my $loop  = 10;
+$nconn = 9;
+$loop  = 1;
+=pod
+sub worker {
+    my ($connid, $cguid, $keyoffset, $keylen, $datalen, $nops) = @_;
+    my ($ret, $msg);
+    my $size = int(rand(41943040));
+
+    $ret = ZSSet ($node->conn ($connid), $cguid, $keyoffset, $keylen, $datalen, $nops);
+    like ($ret, qr/^OK.*/, $ret);
+}
+=cut
+sub test_run {
+    my $ret;
+    my $cguid;
+    my @threads;
+    my $size = 1024;
+
+    $ret = $node->start (
+        gdb_switch   => 1,
+        ZS_REFORMAT => 1,
+    );
+    like ($ret, qr/^OK.*/, 'Node start');
+
+    # Create containers with $nconn connections
+    my $ctrname = 'ctrn-01';
+    $ret = ZSOpen ($node->conn (0), $ctrname, 3, $size, "ZS_CTNR_CREATE", "no");
+    like ($ret, qr/^OK.*/, $ret);
+
+    if ($ret =~ /^OK cguid=(\d+)/) {
+        $cguid = $1;
+    }
+    else {
+        return;
+    }
+
+    my ($keyoffset, $keylen, $datalen, $maxops, $nops);
+    $keyoffset	= 10;
+    $keylen	= 25;
+    $datalen	= 2*1024;
+    $nops	= 10;
+    $ret = ZSSet ($node->conn (0), $cguid, $keyoffset, $keylen, $datalen, $nops);
+    like ($ret, qr/^OK.*/, $ret);
+
+	return;	
+}
+
+sub test_init {
+    $node = Fdftest::Node->new (
+        ip    => "127.0.0.1",
+        port  => "24422",
+        nconn => $nconn,
+    );
+    return;
+}
+
+sub test_clean {
+    $node->stop ();
+    $node->set_ZS_prop (ZS_REFORMAT => 1);
+
+    return;
+}
+
+#
+# main
+#
+{
+    test_init ();
+
+    test_run ();
+
+    test_clean ();
+}
+
+# clean ENV
+END {
+    $node->clean ();
+}
+

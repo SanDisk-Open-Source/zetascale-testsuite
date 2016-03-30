@@ -1,0 +1,258 @@
+# file: 
+# author: Yiwen Lu
+# email: yiwenlu@hengtiansoft.com
+# date: Nov 11, 2014
+# description: 
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use FindBin qw($Bin);
+use lib "$Bin/../../wrapper/lib";
+use Fdftest::Fdfapi;
+use Fdftest::RemoteNode;
+use Fdftest::Stress;
+use Test::More 'no_plan';
+use threads;
+use threads::shared;
+use threads 'exit' => 'threads_only';
+use Data::Dumper;
+
+my $node;
+my %count:shared ;
+my $num_nodes = 2;
+my @nodes;
+my $reset_time = 3; 
+
+sub worker_write{
+    $SIG{'KILL'} = sub { print "killed\n"; threads->exit(); };
+    my ($node,$con,$cguid,$index,$reset) = @_;
+    my $ret;
+    my $nops = 5000;
+    $count{$index}{$con}{$reset} = 0;
+    my $flag;
+    foreach(1..$nops){
+        $flag = 1;
+        $ret = ZSTransactionStart(
+            $node->conn($con),
+            );
+        like($ret, qr/OK.*/, "$node->{'port'},cguid=$cguid,offset=$count{$index}{$con}{$reset}*8,".'ZSTransactionStart');
+        $ret = ZSSet($node->conn($con), $cguid, ($count{$index}{$con}{$reset}*8), (100+$reset), 64000,1, "ZS_WRITE_MUST_NOT_EXIST");
+        like ($ret, qr/^OK.*/, $node->{'port'}.":".$ret);
+        $flag = 0 if (!($ret =~ /OK.*/));
+        $ret = ZSSet($node->conn($con), $cguid, ($count{$index}{$con}{$reset}*8+1), (100+$reset), 128000,1, "ZS_WRITE_MUST_NOT_EXIST");
+        like ($ret, qr/^OK.*/, $node->{'port'}.":".$ret);
+        $flag = 0 if (!($ret =~ /OK.*/));
+        $ret = ZSSet($node->conn($con), $cguid, ($count{$index}{$con}{$reset}*8+2), (100+$reset), 512,6, "ZS_WRITE_MUST_NOT_EXIST");
+        like ($ret, qr/^OK.*/, $node->{'port'}.":".$ret);
+        $flag = 0 if (!($ret =~ /OK.*/));
+        $ret = ZSTransactionCommit(
+            $node->conn($con)
+            );
+        like($ret, qr/OK.*/, "$node->{'port'},cguid=$cguid,offset=".($count{$index}{$con}{$reset}*8+2).',ZSTransactionCommit');
+        $flag = 0 if (!($ret =~ /OK.*/));
+        $count{$index}{$con}{$reset}++ if ($flag == 1);
+        #print "count=$count{$index}{$con}{$reset},index=$index,con=$con,reset=$reset,node=$node->{'port'},cguid=$cguid\n";
+    }
+}
+
+sub worker_read{
+    my $ret;
+    my ($node,$con,$cguid,$count,$reset) = @_;
+    foreach(0..$count-1){
+        $ret = ZSGet($node->conn($con), $cguid, $_*8, (100+$reset), 64000, 1);
+        like ($ret, qr/^OK.*/, $node->{'port'}.":".$ret);
+        $ret = ZSGet($node->conn($con), $cguid, $_*8+1, (100+$reset), 128000, 1);
+        like ($ret, qr/^OK.*/, $node->{'port'}.":".$ret);
+        $ret = ZSGet($node->conn($con), $cguid, $_*8+2, (100+$reset), 512, 6);
+        like ($ret, qr/^OK.*/, $node->{'port'}.":".$ret);
+    }
+    $ret = ZSGet($node->conn($con), $cguid, $count*8, (100+$reset), 64000, 1);
+    like ($ret, qr/^Error.*/, $node->{"port"}.":".$ret);
+    $ret = ZSGet($node->conn($con), $cguid, $count*8+1, (100+$reset), 128000, 1);
+    like ($ret, qr/^Error.*/, $node->{"port"}.":".$ret);
+    $ret = ZSGet($node->conn($con), $cguid, $count*8+2, (100+$reset), 512, 6);
+    like ($ret, qr/^Error.*/, $node->{"port"}.":".$ret);
+
+}
+
+my @threads;
+my %node_cguids;
+my $nctr = 3;
+my @ctr_type = ("BTREE","BTREE");
+my $ret;
+my $cguid;
+
+
+
+
+sub test_run_node {
+    foreach(@nodes)
+    {
+        $ret = $_->start(
+            ZS_REFORMAT  => 1
+            );
+        like($ret, qr/OK.*/, 'remote engine started');
+    }
+    
+    foreach(@nodes)
+    {
+        $node = $_;
+        foreach(1..$nctr)
+        {
+            $ret = ZSOpen($node->conn(0),"ctr-$_",3,0,"ZS_CTNR_CREATE","yes","ZS_DURABILITY_HW_CRASH_SAFE",$ctr_type[$_%2]);
+            like ($ret, qr/^OK.*/, $ret);
+            $cguid = $1 if ($ret =~ /OK cguid=(\d+)/);
+            $node_cguids{$node}{$_} = $cguid;
+        }
+    }
+}
+
+
+
+sub test_run_recovery {
+    my $reset = shift;
+    @threads = ();
+    foreach(1..@nodes)
+    {
+        my $index = $_;
+        $node = $nodes[$_-1];
+        foreach(1..$nctr)
+        {   
+            print "worker_write start:node=$node->{'port'}, cguid=$node_cguids{$node}{$_}, index = $index, reset=$reset\n";
+            push(@threads, threads->new (\&worker_write, $node, $_, $node_cguids{$node}{$_}, $index, $reset));
+        }
+    }
+
+    sleep(60);
+    $nodes[0]->power_reset();
+    foreach(@threads){
+        $_->kill('KILL');
+    }
+    foreach(@nodes)
+    {
+        $_->{ssh} = $nodes[0]->{ssh};
+    }
+    foreach(@nodes)
+    {   
+        $ret = $_->start(
+            ZS_REFORMAT  =>0 
+            );
+        like($ret, qr/OK.*/, 'remote engine restarted');
+    }
+
+    foreach(@nodes)
+    {
+        $node = $_;
+        foreach(1..$nctr)
+        {
+            $ret = ZSOpen($node->conn(0),"ctr-$_",3,0,"ZS_CTNR_RW_MODE","yes","ZS_DURABILITY_HW_CRASH_SAFE",$ctr_type[$_%2]);
+            like ($ret, qr/^OK.*/, $ret);
+            $cguid = $1 if ($ret =~ /OK cguid=(\d+)/);
+            $node_cguids{$node}{$_} = $cguid;
+        }
+
+    }
+
+    @threads = ();
+    foreach(1..@nodes)
+    {
+        my $index = $_;
+        my $con = 0;
+        $node = $nodes[$_-1];
+        foreach(1..$nctr)
+        {
+            my $i = $_;
+            foreach(1..$reset)
+            {
+                print "worker_read start: node = $node->{'port'},con=($i+$_), cguid =$node_cguids{$node}{$i}, count = $count{$index}{$i}{$_},index=$index,i=$i,reset=$_\n";
+                push(@threads, threads->new (\&worker_read, $node, $con, $node_cguids{$node}{$i}, $count{$index}{$i}{$_}, $_));
+                $con++;
+            }
+        }
+    }
+    $_->join for (@threads);
+    print "read finish !\n";
+}
+
+my $remote_dir = "/schooner/data/remote_ftf";
+sub test_init {
+    my $ssh = shift;
+    my $ip = "10.197.16.176";
+    my $port = "24422";
+    my $nvram_offset = 0;
+
+    foreach(1..$num_nodes)
+    {
+        $node = Fdftest::RemoteNode->new(
+            ip          => $ip,
+            port        => $port+$_,
+            nconn       => 12,
+            stats_log   => "/tmp/".($port+$_)."/zsstats.log",
+            zs_log      => "/tmp/".($port+$_)."/zs.log",
+            prop        => "$remote_dir/conf/zs_ins".$_.".prop",
+            local_prop  => "$Bin/../../conf/zs_ins".$_.".prop",
+            ssh         => $ssh,
+            flog_mode   => "ZS_FLOG_NVRAM_MODE",
+            flog_nvram_file        => "/tmp/nvram_file",
+            flog_nvram_file_offset => "$nvram_offset",
+        );
+        push @nodes, $node;
+        $node->set_ZS_prop(ZS_LOG_BLOCK_SIZE  => 4096);
+        print "ZS_LOG_BLOCK_SIZE = ".$node->get_ZS_prop("ZS_LOG_BLOCK_SIZE")."\n";
+        $nvram_offset = $nvram_offset + 3*1025*$node->get_ZS_prop("ZS_LOG_BLOCK_SIZE");
+
+    }
+}
+
+sub test_clean {
+    foreach(@nodes){
+        print "node $_ to stop\n";
+        $_->stop();
+        $_->set_ZS_prop(ZS_REFORMAT  => 1);
+    }
+    return;
+}
+
+#
+# main
+#
+{
+    my $ssh = prepare(ip => "10.197.16.176");
+    shared($ssh);
+    test_init($ssh);
+    foreach(@nodes){print "node = $_->{port}\n";}
+    foreach(1..@nodes)
+    {
+        my $i = $_;
+        $count{$i} = &share({});
+        foreach(1..$nctr)
+        {
+	    my $j = $_;
+	    $count{$i}{$j} = &share({});
+	    foreach(1..$reset_time)
+	    {
+       	        $count{$i}{$j}{$_} = 0;
+	    }
+        } 
+    }
+
+    test_run_node();
+    
+    foreach(1..$reset_time)
+    {
+        test_run_recovery($_);
+    }
+    test_clean();
+}
+
+
+# clean ENV
+END {
+    foreach(@nodes){
+        $_->clean();
+    }
+}
+

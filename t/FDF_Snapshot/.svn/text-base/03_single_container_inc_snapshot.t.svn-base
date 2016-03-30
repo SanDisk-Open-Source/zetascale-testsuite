@@ -1,0 +1,266 @@
+# file: basic.pl
+# author: yiwen sun
+# email: yiwensun@hengtiansoft.com
+# date: Oct 15, 2012
+# description: basic sample for testcase
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Switch;
+use threads;
+
+use FindBin qw($Bin);
+use lib "$Bin/../../wrapper/lib";
+use Fdftest::Fdfapi;
+use Fdftest::Stress;
+use Fdftest::Node;
+use Test::More tests => 30;
+
+my $node;
+my $nconn = 256;
+my $loop  = 10;
+
+sub test_run {
+    my $ret;
+    my $cguid;
+    my @threads;
+    my $size = 1024;
+	my @snap_seq;
+	my @checksum_base;
+	my @checksum_snp;
+
+    $ret = $node->start (
+        gdb_switch   => 1,
+        ZS_REFORMAT => 1,
+    );
+    like ($ret, qr/^OK.*/, 'Node start');
+
+    # Create containers with $nconn connections
+    my $ctrname = 'ctrn-01';
+    $ret = ZSOpen ($node->conn (0), $ctrname, 3, $size, "ZS_CTNR_CREATE", "yes");
+    like ($ret, qr/^OK.*/, $ret);
+
+    if ($ret =~ /^OK cguid=(\d+)/) {
+        $cguid = $1;
+    }else {
+        return;
+    }
+
+	my ($keyoffset, $keylen, $datalen, $nops) = (0, 10, 50, 10);
+	$ret = ZSSet ($node->conn(0), $cguid, $keyoffset, $keylen, $datalen, $nops);
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCheckSum($node->conn(0), $cguid);
+	chomp($ret);
+	if ($ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/){
+		$checksum_base[0] = $2;
+		if ($4 != 10){
+			$ret = "Error: ZSDataCheckSum:checksum=$2 Expected count: 10, got: $4";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	# Create snapshot after set 10 objs.
+	$ret = ZSCreateSnapshot($node->conn(0), $cguid);
+	like ($ret, qr/^OK.*/, $ret);
+	if ($ret =~ /^OK(.*)snap_seq=(\d+)/) {
+		$snap_seq[0] = $2;
+	}
+
+	# Update 0-5 objs and verify data by read obj
+	($keyoffset, $keylen, $datalen, $nops) = (0, 10, 60, 5);
+	$ret = ZSSet ($node->conn(0), $cguid, $keyoffset, $keylen, $datalen, $nops);
+	like ($ret, qr/^OK.*/, $ret);
+	$ret = ZSGet ($node->conn(0), $cguid, $keyoffset, $keylen, $datalen, $nops);
+	like ($ret, qr/^OK.*/, $ret);
+
+	$keyoffset	= 5;
+	$datalen	= 50;
+	$ret = ZSGet ($node->conn(0), $cguid, $keyoffset, $keylen, $datalen, $nops);
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCheckSum($node->conn(0), $cguid);
+	chomp($ret);
+	if ($ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/){
+		$checksum_base[1] = $2;
+		if ($4 != 10){
+			$ret = "Error: ZSDataChecksum: checksum=$2 Expected count: 10, got: $4";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCreateSnapshot($node->conn(0), $cguid);
+	like ($ret, qr/^OK.*/, $ret);
+	if ($ret =~ /^OK(.*)snap_seq=(\d+)/) {
+		$snap_seq[1] = $2;
+	}
+
+	$keyoffset	= 5;
+	$datalen	= 60;
+	$ret = ZSDel ($node->conn(0), $cguid, $keyoffset, $keylen, $nops);
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCheckSum($node->conn(0), $cguid);
+	chomp($ret);
+	if ($ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/){
+		$checksum_base[2] = $2;
+		if ($4 != 5){
+			$ret = "Error: ZSDataChecksum: checksum=$2 Expected count: 10, got: $4";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCreateSnapshot($node->conn(0), $cguid);
+	like ($ret, qr/^OK.*/, $ret);
+	if ($ret =~ /^OK(.*)snap_seq=(\d+)/) {
+		$snap_seq[2] = $2;
+	}
+	
+	# Insert objs
+	($keyoffset, $keylen, $datalen, $nops) = (0, 15, 60, 5);
+	$ret = ZSSet ($node->conn(0), $cguid, $keyoffset, $keylen, $datalen, $nops);
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCreateSnapshot($node->conn(0), $cguid);
+	like ($ret, qr/^OK.*/, $ret);
+	if ($ret =~ /^OK(.*)snap_seq=(\d+)/) {
+		$snap_seq[3] = $2;
+	}
+	
+	$ret = ZSCheckSum($node->conn(0), $cguid);
+	chomp($ret);
+	if ($ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/){
+		$checksum_base[3] = $2;
+		if ($4 != 10){
+			$ret = "Error: ZSDataChecksum: checksum=$2 Expected count: 10, got: $4";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCheckSum($node->conn(0), $cguid, $snap_seq[0]);
+	chomp($ret);
+	if ($ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/){
+		$checksum_snp[0] = $2;
+		if ($4 != 10 || $2 != $checksum_base[0]){
+			$ret = "Error: ZSDataChecksum snap_seq=$snap_seq[0]: Expected count=10,checksum=$checksum_base[0] got: count=$4, checksum=$2";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCheckSum($node->conn(0), $cguid, $snap_seq[1]);
+	chomp($ret);
+	if ($ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/){
+		$checksum_snp[1] = $2;
+		if ($4 != 10 || $2 != $checksum_base[1]){
+			$ret = "Error: ZSDataChecksum snap_seq=$snap_seq[1]: Expected count=10,checksum=$checksum_base[1] got: count=$4, checksum=$2";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCheckSum($node->conn(0), $cguid, $snap_seq[2]);
+	chomp($ret);
+	if ($ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/){
+		$checksum_snp[2] = $2;
+		if ($4 != 5 || $2 != $checksum_base[2]){
+			$ret = "Error: ZSDataChecksum snap_seq=$snap_seq[2]: Expected count=5, checksum=$checksum_base[2] Got: count=$4, checksum=$2";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSGetSnapshots($node->conn(0), $cguid);
+	like ($ret, qr/^OK.*/, $ret);
+
+	# Check increamental snapshots
+	$ret = ZSCheckSum($node->conn(0), $cguid, $snap_seq[0], $snap_seq[1]);
+	chomp($ret);
+	if ( $ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/) {
+		if ($4 != 5 ) {
+			$ret = "Error: ZSDataChecksum start_seq=$snap_seq[0], end_seq=$snap_seq[1]: count=$4, checksum=$2";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCheckSum($node->conn(0), $cguid, $snap_seq[1], $snap_seq[2]);
+	chomp($ret);
+	if ( $ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/) {
+		if ($4 != 0 ) {
+			$ret = "Error: ZSDataChecksum start_seq=$snap_seq[1], end_seq=$snap_seq[2]: count=$4, checksum=$2";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCheckSum($node->conn(0), $cguid, $snap_seq[0], $snap_seq[2]);
+	chomp($ret);
+	if ( $ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/) {
+		if ($4 != 5 ) {
+			$ret = "Error: ZSDataChecksum start_seq=$snap_seq[0], end_seq=$snap_seq[2]: count=$4, checksum=$2";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSCheckSum($node->conn(0), $cguid, $snap_seq[2], $snap_seq[3]);
+	chomp($ret);
+	if ( $ret =~ /^OK(.*)checksum=(\d+)(.*)count=(\d+)/) {
+		if ($4 != 5 || $2 != abs($checksum_base[3] - $checksum_base[2])) {
+			$ret = "Error: ZSDataChecksum start_seq=$snap_seq[2], end_seq=$snap_seq[3]: count=$4, checksum=$2";
+		}
+	}
+	like ($ret, qr/^OK.*/, $ret);
+
+	# Delete snapshot s0, s1.
+	$ret = ZSDeleteSnapshot($node->conn(0), $cguid, $snap_seq[0]);
+	like ($ret, qr/^OK.*/, $ret);	
+
+	$ret = ZSDeleteSnapshot($node->conn(0), $cguid, $snap_seq[1]);
+	like ($ret, qr/^OK.*/, $ret);	
+
+	$ret = ZSGetSnapshots($node->conn(0), $cguid);
+	like ($ret, qr/^OK.*/, $ret);
+
+	# After close container.	
+	$ret = ZSClose ($node->conn(0), $cguid);
+	like ($ret, qr/^OK.*/, $ret);
+
+	$ret = ZSGetSnapshots($node->conn(0), $cguid);
+	like ($ret, qr/^Error.*/, $ret);
+
+	$ret = ZSDeleteSnapshot($node->conn(0), $cguid, $snap_seq[1]);
+	like ($ret, qr/^Error.*/, $ret);	
+	
+    return;
+}
+
+sub test_init {
+    $node = Fdftest::Node->new (
+        ip    => "127.0.0.1",
+        port  => "24422",
+        nconn => $nconn,
+    );
+    return;
+}
+
+sub test_clean {
+    $node->stop ();
+    $node->set_ZS_prop (ZS_REFORMAT => 1);
+
+    return;
+}
+
+#
+# main
+#
+{
+    test_init ();
+
+    test_run ();
+
+    test_clean ();
+}
+
+# clean ENV
+END {
+    $node->clean ();
+}
+

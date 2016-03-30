@@ -1,0 +1,98 @@
+#file:
+#author:Jie Wang
+#email:Jie.Wang@sandisk.com
+#date:Dec 17,2014
+#descrption:
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use FindBin qw($Bin);
+use lib "$Bin/../../wrapper/lib";
+use Fdftest::Fdfapi;
+use Fdftest::Node;
+use Fdftest::Stress;
+use Test::More 'no_plan';
+
+my $node;
+
+sub test_run {
+	my $ret;
+
+        print "-----ZS_FLASH_FILENAME------\n";
+        my $lib = "/zAzA--zzzz++zz+zz-zzzzzzzzzzzzzz/bbbbbbbbbbbbbbbbb/bbbbbbbbbbbbbbbbbbbbbbbbbb";
+        $node -> set_ZS_prop(ZS_FLASH_FILENAME => $lib);
+	$ret = $node->start(
+			ZS_REFORMAT => 1,
+		);
+
+	like($ret,qr/failed to start node, so exit program.*/,'Node start failed when set ZS_FLASH_FILENAME an invalid path');
+	
+
+        #$ret = $node->stop();
+	#like($ret,qr/OK.*/,'Node stop');
+        $node -> set_ZS_prop(ZS_FLASH_FILENAME => "/schooner/data/schooner0");
+
+        print "-----ZS_LIB-----\n";
+	my $cmd ="mv $Bin/../../zs_sdk/lib/libzs.so $Bin/../../zs_sdk/lib/libzs.so1";
+	system($cmd);
+
+	$ret = $node->start(
+			ZS_REFORMAT => 1,
+		);
+	like($ret,qr/failed to start node, so exit program.*/,'Node start failed when set ZS_LIB an invalid path');
+   
+        #$ret = $node->stop();
+        #like($ret,qr/OK.*/,'Node stop');
+        #my $cmd2 = "sed -i \'s#ZS_LIB=$lib2#ZS_LIB=\$self->{sdk}/lib/libzs.so#g\' $Bin/../../wrapper/lib/Fdftest/Node.pm";
+        #system($cmd2);
+	$cmd ="mv $Bin/../../zs_sdk/lib/libzs.so1 $Bin/../../zs_sdk/lib/libzs.so";
+        system($cmd);
+
+        print "-----ZS_LICENSE_PATH-----\n";
+        $node -> set_ZS_prop(ZS_LICENSE_PATH => "/Optt/AanDisk/LIi");
+	$ret = $node->start(
+			ZS_REFORMAT => 1,
+		);
+	#like($ret,qr/OK.*/,'Node start');
+	like($ret, qr/failed to start node, so exit program.*/, "Node start failed when set ZS_FLASH_FILENAME an invalid path");
+
+        #$ret = $node->stop();
+	#like($ret,qr/OK.*/,'Node stop');
+        $node -> set_ZS_prop(ZS_LICENSE_PATH => "/opt/sandisk/zs/license");
+        
+}
+ 
+sub test_init {
+	$node = Fdftest::Node->new(
+		ip	=> "127.0.0.1",
+		port	=> "24422",
+		nconn	=> 1,
+	     );
+}
+
+sub test_clean {
+	#$node->stop();	
+	$node->set_ZS_prop(ZS_REFORMAT  => 1);
+
+	return;
+}
+
+#
+# main
+#
+{	
+	test_init();
+
+	test_run();
+
+	test_clean();
+
+}
+
+#clean ENV
+END {
+	$node->clean();
+}
