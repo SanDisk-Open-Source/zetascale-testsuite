@@ -1,8 +1,0 @@
-set logging on
-handle SIGSTOP nostop
-handle SIGHUP nostop
-handle SIGPIPE noprint nostop
-r
-bt
-quit
-

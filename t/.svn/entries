@@ -1,91 +1,0 @@
-10
-
-dir
-23114
-https://10.196.60.217/svn/schooner-trunk/ht_delivery/qa/FDF_test/FDF_test_framework-3.0/t
-https://10.196.60.217/svn/schooner-trunk
-
-
-
-2015-07-20T09:36:23.991881Z
-23110
-ylu
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-ba7ee367-fa33-434a-87bc-0e7c79de627f
-
-Basic
-dir
-
-Sample
-dir
-
-MemoryReduction
-dir
-
-MPut
-dir
-
-UnifiedContainer
-dir
-
-Flog
-dir
-
-Recovery
-dir
-
-RenameCntr
-dir
-
-MultiNode
-dir
-
-DurabilityLevel
-dir
-
-RemoteNode
-dir
-
-FDF_RangeQuery
-dir
-
-MiniTransaction
-dir
-
-Garbage_Collection
-dir
-
-repro_bugs
-dir
-
-MultiConn
-dir
-
-LeanMemory
-dir
-
-Zsck
-dir
-
-LoggingCntr
-dir
-
-LargeCnum
-dir
-
-FDF_Snapshot
-dir
-
